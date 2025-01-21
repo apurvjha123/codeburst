@@ -65,7 +65,7 @@ export function CollaborativeEditor({
           height="100%"
           width="100hw"
           theme="vs-dark"
-          defaultLanguage="typescript"
+          defaultLanguage="javascript"
           defaultValue=""
           value={content}
           onChange={(value) => onContentChange(value || "")}
