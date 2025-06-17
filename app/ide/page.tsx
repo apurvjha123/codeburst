@@ -1,4 +1,3 @@
-// Page.js
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -23,9 +22,7 @@ const Page = () => {
   };
 
   const fetchFileContent = async (path: string) => {
-    const response = await fetch(
-      `http://localhost:9000/files/content?path=${path}`
-    );
+    const response = await fetch(`http://localhost:9000/files/content?path=${path}`);
     const result = await response.json();
     setEditorContent(result.content);
   };
@@ -69,45 +66,54 @@ const Page = () => {
   }, [editorContent, selectedFile]);
 
   return (
-    <div className="h-screen flex flex-col">
-      {/* Top bar */}
-      <div className="flex h-12 bg-gray-800 text-white items-center px-4">
-        <span className="text-lg font-bold">Code Burst</span>
+    <div className="h-screen flex flex-col font-mono">
+      {/* Top Bar - VS Code style */}
+      <div className="flex h-10 bg-[#1e1e1e] text-white items-center px-4 text-sm shadow-sm">
+        <span className="font-semibold">CodeBurst</span>
+        <span className="ml-4 text-gray-400">{selectedFile ?? "Welcome!"}</span>
         <button
           onClick={saveFile}
-          className="ml-auto bg-blue-500 px-4 py-1 rounded text-white"
+          className="ml-auto bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-xs"
         >
-          Save
+          Save (Ctrl+S)
         </button>
       </div>
-      {/* Split between Sidebar and Editor */}
+
+      {/* Editor Area Split */}
       <Split
-        className="split flex-grow"
-        sizes={[25, 75]}
-        minSize={200}
-        gutterSize={8}
+        className="flex-grow flex"
+        sizes={[20, 80]}
+        minSize={180}
+        gutterSize={4}
+        direction="horizontal"
       >
         {/* Sidebar */}
-        <div className="bg-gray-900 text-gray-300 p-4">
+        <div className="bg-[#252526] text-gray-300 overflow-auto py-2 px-1 text-sm border-r border-[#333]">
           <FileTree
             onSelect={(path: any) => setSelectedFile(path)}
             tree={fileTree}
           />
         </div>
-        {/* Editor and Terminal */}
-        <div className="flex flex-col flex-grow bg-gray-800">
+
+        {/* Main Area */}
+        <div className="flex flex-col bg-[#1e1e1e] text-white">
+          {/* Breadcrumb path */}
+          <div className="text-xs text-gray-400 px-4 py-2 border-b border-[#333] bg-[#2d2d2d]">
+            {selectedFile ? selectedFile.replaceAll("/", " ▸ ") : "No file selected"}
+          </div>
+
           {/* Editor */}
-          {selectedFile && <p>{selectedFile.replaceAll("/", " > ")}</p>}
-          <div className="flex-grow">
+          <div className="flex-grow overflow-hidden">
             <Room>
               <CollaborativeEditor
                 content={editorContent}
-                onContentChange={(value:any) => setEditorContent(value)}
+                onContentChange={(value: any) => setEditorContent(value)}
               />
             </Room>
           </div>
+
           {/* Terminal */}
-          <div className="bg-gray-900" style={{ height: 150 }}>
+          <div className="bg-[#111315] border-t border-[#333] h-[160px] overflow-hidden">
             <Terminal />
           </div>
         </div>

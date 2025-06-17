@@ -19,6 +19,12 @@ const Navbar = async () => {
                 Pricing
               </Link>
               <Link
+                href="/confrence"
+                className="hover:text-foreground/80 text-sm"
+              >
+                Confrence
+              </Link>
+              <Link
                 href="https://github.com/apurvjha123"
                 className="hover:text-foreground/80 text-sm"
               >
